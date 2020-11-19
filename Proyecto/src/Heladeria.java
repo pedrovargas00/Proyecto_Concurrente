@@ -1,11 +1,14 @@
 import java.util.Hashtable;
-import java.util.LinkedList;
 import java.util.Map.Entry;
 
+/*Esta clase se encarga de gestionar la heladería. Contiene los sabores de
+los helados, la cantidad de estos, la cantidad de servilletas y barquillos.
+Aquí también se restan y verifican cada uno de los productos antes mencionados
+
+Los helados y la cantidad de estos están almacenados en un diccionario*/
 public class Heladeria{
     
     private boolean mostradorOcupado, cajaOcupada;
-    private int espera;
     private Controlador controlador;
     private int barquillos;
     private int servilletas;
@@ -18,7 +21,6 @@ public class Heladeria{
         this.barquillos = 10;
         this.servilletas = 10;
         this.sabores  = new Hashtable();
-        this.espera = 0;
     }
     
     public void setControlador(Controlador controlador){
@@ -49,19 +51,22 @@ public class Heladeria{
 
     }
     
-    public void llenarSabor(String sabor){
+    public void restarHelado(String helado){
         
-        sabores.replace(sabor, 0, 10);
+        sabores.replace(helado, sabores.get(helado), sabores.get(helado) - 1);
     }
     
-    private String verificarSabores(){
+    public void llenarSabor(String helado){
         
-        for (Entry<String, Integer> m : sabores.entrySet()) {
-            if(m.getValue() == 0)
-                return m.getKey();
-        }
+        sabores.replace(helado, 0, 10);
+    }
+    
+    public boolean verificarSabor(String helado){
         
-        return "";
+        if(sabores.get(helado) == 0)
+            return false;
+        else
+            return true;
     }
     
     public boolean verificarServilletas(){
@@ -74,7 +79,7 @@ public class Heladeria{
          }
     }
     
-    private boolean verificarBarquillos(){
+    public boolean verificarBarquillos(){
         
         if(barquillos == 0)
            return false;
@@ -83,5 +88,14 @@ public class Heladeria{
              return true;
          }
     }
+    
+    public void llenarServilletas(){
         
+        this.servilletas = 10;
+    }
+    
+    public void llenarBarquillos(){
+        
+        this.barquillos = 10;
+    }
 }

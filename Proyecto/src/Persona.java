@@ -1,6 +1,7 @@
 import java.util.Hashtable;
 import java.util.Map;
-import java.util.Random;
+
+/*Esta clase modela a una persona que pide un helado*/
 
 public class Persona extends Thread{
     
@@ -9,41 +10,62 @@ public class Persona extends Thread{
     private boolean pedido;
     private boolean pagado;
     
-    public Persona(int nombre){
+    public Persona(){
         
-        this.nombre = nombre;
+        this.nombre = 0;
         this.pedido = false;
         this.pagado = false;
         this.helado = "";
     }
     
-    public int run(Hashtable<String, Integer> helados, int tiempo, int opcion) throws InterruptedException{
-        
+    public String run(Hashtable<String, Integer> helados, int tiempo, int opcion) throws InterruptedException{
+        /*La opción 1 es brinda un tiempo aleatorio para elegir un helado,
+        este tiempo se asigna desde la clase Grupo. El tiempo asignado está 
+        entre 1-5 segundos. Se regresa el nombre de la persona y el helado
+        seleccionado.*/
         if(opcion == 1){
             Thread.sleep(tiempo * 1000);
-            elegir(helados, tiempo);
+            elegirHelado(helados, tiempo);
             System.out.println("Helado elegido " + this.helado);
-            pedirHelado();
-            return nombre;
+            return String.valueOf(nombre) + "." + helado;
         }
+        /*Después de elegir el helado, la persona pedirá el helado
+        para esto se asignan dos segundos y se regresa el nombre*/
         if(opcion == 2){
+            pedirHelado();
+            return "";
+        }
+        /*La opción dos solamente es para pagar el helado con ayuda del método
+        "pagarHelado"*/
+        if(opcion == 3){
             pagarHelado();
-            return 0;
+            return "";
         }
         
-        return 0;
+        return "";
+    }
+    
+    public void setNombre(int nombre){
+        
+        this.nombre = nombre;
     }
     
     public boolean getPedido(){
         return pedido;
     }
     
-    public void elegir(Hashtable<String, Integer> helados, int tiempo){
+    public void elegirHelado(Hashtable<String, Integer> helados, int tiempo){
         
+        /*La selección del helado se realiza a tráves del tiempo asignado.
+        Como solo se tienen tres helados y el tiempo se toma índice para
+        buscar los helados, se verifica si el tiempo es mayor a tres con la
+        finalidad de no generar desbordamiento. Se recorre el diccionario
+        en busca del helado solicitado y se tiene un contador para saber cuándo
+        se llegó al helado deseado. */
         System.out.println("Eligiendo helado");
         int a = 0;
         
-        if(tiempo > 4)
+        if(tiempo > 3)
             tiempo = 3;
         for (Map.Entry<String, Integer> m : helados.entrySet()) {
             if(a == tiempo)
